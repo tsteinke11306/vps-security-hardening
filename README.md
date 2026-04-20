@@ -32,7 +32,7 @@ A systematic approach to hardening an Ubuntu 24.04 VPS for production use — co
                               ┌──────▼──────┐      ┌────▼────────┐
                               │  Portfolio  │      │  Private    │
                               │  API        │      │  Services   │
-                              │  (localhost)│      │  (localhost)│
+                              │ (localhost) │      │ (localhost) │
                               └─────────────┘      │ qBittorrent │
                                                    │ FileBrowser │
                                                    │ Ollama      │
