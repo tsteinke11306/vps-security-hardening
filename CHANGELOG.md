@@ -2,6 +2,19 @@
 
 All notable changes to this VPS hardening configuration.
 
+## [1.1.0] - 2026-04-20
+
+### Added
+- Zero Trust / Tailscale section in README
+  - Network architecture diagram showing mesh VPN overlay
+  - Tailnet device inventory with IPs and roles
+  - Tailscale Serve configuration documentation
+  - Service access matrix (public vs Tailscale vs localhost)
+  - Security properties analysis (encryption, key rotation, P2P)
+  - Future improvements roadmap (ACLs, Tailscale SSH, device auth, tailnet lock)
+- Updated main architecture diagram to show Tailscale mesh and private services
+- Updated before/after table with zero trust row
+
 ## [1.0.0] - 2026-04-20
 
 ### Added
