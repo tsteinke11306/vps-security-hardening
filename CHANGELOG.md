@@ -2,6 +2,13 @@
 
 All notable changes to this VPS hardening configuration.
 
+## [1.1.1] - 2026-04-20
+
+### Changed
+- Censored all IP addresses (Tailscale IPs → `100.x.x.x`, tailnet domain → `<tailnet>.ts.net`, admin email → `<admin-email>`)
+- Updated Tailscale device inventory (removed offline `ts0689dt01`, added `ts0689dt1` as secondary workstation)
+- Updated network architecture diagram to include 4 devices
+
 ## [1.1.0] - 2026-04-20
 
 ### Added

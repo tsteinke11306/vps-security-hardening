@@ -222,17 +222,17 @@ Traditional network security assumes everything inside the perimeter is trusted.
 │                      Tailscale Mesh VPN                     │
 │                    (WireGuard-based overlay)                │
 │                                                             │
-│  ┌──────────────┐   ┌──────────────┐   ┌──────────────┐     │
-│  │  VPS         │   │  Home PC     │   │  iPhone      │     │
-│  │ 100.112.69.58│   │ 100.111.172.1│   │100.120.231.99│     │
-│  │              │   │              │   │              │     │
-│  │ OpenClaw GW  │   │ Admin access │   │ Mobile admin │     │
-│  │ qBittorrent  │   │              │   │              │     │
-│  │ FileBrowser  │   │              │   │              │     │
-│  └──────┬───────┘   └──────────────┘   └──────────────┘     │
+│  ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   ┌──────────────┐     │
+│  │  VPS         │   │  Home PC     │   │ Workstation  │   │  iPhone      │     │
+│  │ 100.x.x.x   │   │ 100.x.x.x   │   │ 100.x.x.x   │   │ 100.x.x.x   │     │
+│  │              │   │              │   │              │   │              │     │
+│  │ OpenClaw GW  │   │ Admin access │   │ Secondary    │   │ Mobile admin │     │
+│  │ qBittorrent  │   │              │   │ workstation  │   │              │     │
+│  │ FileBrowser  │   │              │   │              │   │              │     │
+│  └──────┬───────┘   └──────────────┘   └──────────────┘   └──────────────┘     │
 │         │                                                   │
-│    Tailscale Serve                                          │
-│    (HTTPS proxy → localhost)                                │
+│    Tailscale Serve                                         │
+│    (HTTPS proxy → localhost)                               │
 └─────────┼───────────────────────────────────────────────────┘
           │
     ┌─────▼─────┐
@@ -245,23 +245,22 @@ Traditional network security assumes everything inside the perimeter is trusted.
 
 | Device | Tailscale IP | OS | Role |
 |--------|-------------|-----|------|
-| vmi3209984 | 100.112.69.58 | Ubuntu 24.04 | VPS — primary server |
-| home-pc | 100.111.172.1 | Windows | Admin workstation |
-| ts0689dt1 | 100.122.10.117 | Windows | Secondary workstation |
-| iphone-13 | 100.120.231.99 | iOS | Mobile admin access |
-| ts0689dt01 | 100.113.243.124 | Windows | Offline backup |
+| vmi3209984 | 100.x.x.x | Ubuntu 24.04 | VPS — primary server |
+| home-pc | 100.x.x.x | Windows | Admin workstation |
+| ts0689dt1 | 100.x.x.x | Windows | Secondary workstation |
+| iphone-13 | 100.x.x.x | iOS | Mobile admin access |
 
 ### Tailscale Serve — Secure Public Access
 
 Tailscale Serve exposes the OpenClaw gateway over HTTPS without opening any firewall ports:
 
 ```
-https://vmi3209984.tailea1368.ts.net (tailnet only)
+https://<hostname>.<tailnet>.ts.net (tailnet only)
 └── / → proxy http://127.0.0.1:18789
 ```
 
 This means:
-- The OpenClaw web UI is accessible at `https://vmi3209984.tailea1368.ts.net` from any tailnet device
+- The OpenClaw web UI is accessible at `https://<hostname>.<tailnet>.ts.net` from any tailnet device
 - **No ports are opened** — the connection is brokered by Tailscale's coordination server
 - **Automatic HTTPS** — Tailscale provisions and renews TLS certificates
 - **Tailnet-only** — Not exposed to the public internet (no funnel)
@@ -291,7 +290,7 @@ This means:
 
 1. **No open ports for private services** — qBittorrent, FileBrowser, Ollama, and the OpenClaw gateway are all bound to `127.0.0.1`. They're invisible to port scanners.
 
-2. **Identity-based access** — Only authenticated devices in the `tailea1368.ts.net` tailnet can reach private services. Access is tied to the Google account (`tsteinke130@gmail.com`), not a shared VPN password.
+2. **Identity-based access** — Only authenticated devices in the `<tailnet>.ts.net` tailnet can reach private services. Access is tied to the Google account (`<admin-email>`), not a shared VPN password.
 
 3. **Encrypted transit** — All Tailscale traffic uses WireGuard encryption (ChaCha20-Poly1305). No plaintext data crosses the internet.
 
@@ -310,7 +309,7 @@ ufw allow in on tailscale0 comment 'Tailscale traffic'
 This means:
 - All traffic on the `tailscale0` interface is accepted
 - Traffic on `eth0` (public internet) is filtered by port
-- Private services on `100.112.69.58` (Tailscale IP) are accessible only from tailnet devices
+- Private services on `100.x.x.x` (Tailscale IP) are accessible only from tailnet devices
 
 ### Future Improvements
 
