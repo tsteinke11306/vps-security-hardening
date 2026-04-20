@@ -224,15 +224,15 @@ Traditional network security assumes everything inside the perimeter is trusted.
 │                                                             │
 │  ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   ┌──────────────┐     │
 │  │  VPS         │   │  Home PC     │   │ Workstation  │   │  iPhone      │     │
-│  │ 100.x.x.x   │   │ 100.x.x.x   │   │ 100.x.x.x   │   │ 100.x.x.x   │     │
+│  │ 100.x.x.x    │   │ 100.x.x.x    │   │ 100.x.x.x    │   │ 100.x.x.x    │     │
 │  │              │   │              │   │              │   │              │     │
 │  │ OpenClaw GW  │   │ Admin access │   │ Secondary    │   │ Mobile admin │     │
 │  │ qBittorrent  │   │              │   │ workstation  │   │              │     │
 │  │ FileBrowser  │   │              │   │              │   │              │     │
 │  └──────┬───────┘   └──────────────┘   └──────────────┘   └──────────────┘     │
 │         │                                                   │
-│    Tailscale Serve                                         │
-│    (HTTPS proxy → localhost)                               │
+│    Tailscale Serve                                          │
+│    (HTTPS proxy → localhost)                                │
 └─────────┼───────────────────────────────────────────────────┘
           │
     ┌─────▼─────┐
