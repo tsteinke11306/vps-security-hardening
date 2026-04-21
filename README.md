@@ -267,24 +267,19 @@ This means:
 
 ### Access Model
 
-```
-┌─────────────────────────────────────────────────┐
-│              Service Access Matrix              │
-├─────────────────┬──────────┬──────────┬─────────┤
-│ Service         │ Public   │ Tailscale│ Local   │
-├─────────────────┼──────────┼──────────┼─────────┤
-│ SSH (2222)      │ ✅ key+  │ ✅      │ ✅     │
-│ Caddy (80/443)  │ ✅       │ ✅      │ ✅     │
-│ Portfolio API   │ via Caddy | ✅     │ ✅     │
-│ OpenClaw UI     │ ❌       │ ✅ Serve│ ✅     │
-│ qBittorrent UI  │ ❌       │ ✅*     │ ✅     │
-│ FileBrowser     │ ❌       │ ✅*     │ ✅     │
-│ Ollama          │ ❌       │ ✅*     │ ✅     │
-└─────────────────┴──────────┴──────────┴─────────┘
+| Service | Public | Tailscale | Local |
+|---|---|---|---|
+| SSH (2222) | ✅ key-only¹ | ✅ | ✅ |
+| Caddy (80/443) | ✅ | ✅ | ✅ |
+| Portfolio API | via Caddy⁺ | ✅ | ✅ |
+| OpenClaw UI | ❌ | ✅ Tailscale Serve | ✅ |
+| qBittorrent UI | ❌ | ✅\* | ✅ |
+| FileBrowser | ❌ | ✅\* | ✅ |
+| Ollama | ❌ | ✅\* | ✅ |
 
-✅ = direct access    ✅* = via Tailscale IP or SSH tunnel
-+ = key-only auth + fail2ban
-```
+¹ key-only auth + fail2ban\
+⁺ Caddy reverse-proxies `:8443` → `localhost:3456`\
+\* via Tailscale IP or SSH tunnel
 
 ### Security Properties
 
