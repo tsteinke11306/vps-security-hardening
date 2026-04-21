@@ -12,32 +12,32 @@ A systematic approach to hardening an Ubuntu 24.04 VPS for production use — co
 ## 🏗️ Architecture Overview
 
 ```
-                        ┌─────────────────────────────────────────────┐
-                        │              Internet                       │
-                        └─────────────┬───────────────────────────────┘
-                                      │
-                              ┌───────▼───────┐
-                              │  UFW Firewall │
-                              │ (default deny)│
-                              └───┬───┬───┬───┘
-                                  │   │   │
-                    ┌─────────────┘   │   └──────────────┐
-                    │                 │                  │
-              ┌─────▼─────┐     ┌─────▼─────┐     ┌──────▼──────┐
-              │ SSH :2222 │     │ Caddy     │     │  Tailscale  │
-              │ (key-only)│     │ :80/:443  │     │  (mesh VPN) │
-              │ +fail2ban │     │ :8443     │     │ WireGuard   │
-              └───────────┘     └─────┬─────┘     └──────┬──────┘
-                                      │                  │
-                               ┌──────▼──────┐      ┌────▼────────┐
-                               │  Portfolio  │      │  Private    │
-                               │  API        │      │  Services   │
-                               │ (localhost) │      │ (localhost) │
-                               └─────────────┘      │ qBittorrent │
-                                                    │ FileBrowser │
-                                                    │ Ollama      │
-                                                    │ OpenClaw GW │
-                                                    └─────────────┘
+                         ┌───────────────────┐
+                         │     Internet      │
+                         └─────────┬─────────┘
+                                   │
+                         ┌─────────▼─────────┐
+                         │   UFW Firewall      │
+                         │  (default deny)     │
+                         └──┬──────┬──────┬───┘
+                            │      │      │
+               ┌────────────┘      │      └────────────┐
+               │                   │                   │
+        ┌──────▼──────┐  ┌────────▼──────┐  ┌─────────▼─────────┐
+        │ SSH :2222   │  │   Caddy       │  │    Tailscale      │
+        │ (key-only)  │  │  :80 / :443   │  │   (mesh VPN)      │
+        │ + fail2ban  │  │    :8443      │  │    WireGuard      │
+        └─────────────┘  └───────┬───────┘  └─────────┬─────────┘
+                                 │                    │
+                         ┌───────▼──────┐   ┌────────▼────────┐
+                         │  Portfolio   │   │  Private        │
+                         │  API         │   │  Services       │
+                         │  (localhost) │   │  (localhost)    │
+                         └──────────────┘   │  qBittorrent    │
+                                            │  FileBrowser    │
+                                            │  Ollama         │
+                                            │  OpenClaw GW    │
+                                            └────────────────┘
 ```
 
 ### Network Segmentation
@@ -218,27 +218,27 @@ Traditional network security assumes everything inside the perimeter is trusted.
 ### Network Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                      Tailscale Mesh VPN                     │
-│                    (WireGuard-based overlay)                │
-│                                                             │
-│  ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   ┌──────────────┐     │
-│  │  VPS         │   │  Home PC     │   │ Workstation  │   │  iPhone      │     │
-│  │ 100.x.x.x    │   │ 100.x.x.x    │   │ 100.x.x.x    │   │ 100.x.x.x    │     │
-│  │              │   │              │   │              │   │              │     │
-│  │ OpenClaw GW  │   │ Admin access │   │ Secondary    │   │ Mobile admin │     │
-│  │ qBittorrent  │   │              │   │ workstation  │   │              │     │
-│  │ FileBrowser  │   │              │   │              │   │              │     │
-│  └──────┬───────┘   └──────────────┘   └──────────────┘   └──────────────┘     │
-│         │                                                   │
-│    Tailscale Serve                                          │
-│    (HTTPS proxy → localhost)                                │
-└─────────┼───────────────────────────────────────────────────┘
-          │
-    ┌─────▼─────┐
-    │ Internet  │
-    │ (public)  │
-    └───────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                      Tailscale Mesh VPN                          │
+│                    (WireGuard-based overlay)                     │
+│                                                                  │
+│  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐ │
+│  │    VPS     │  │  Home PC   │  │ Workstation │  │   iPhone   │ │
+│  │ 100.x.x.x  │  │ 100.x.x.x  │  │ 100.x.x.x  │  │ 100.x.x.x  │ │
+│  │            │  │            │  │            │  │            │ │
+│  │ OpenClawGW │  │  Admin     │  │ Secondary  │  │ Mobile     │ │
+│  │ qBittorrent│  │  access    │  │ workstation│  │ admin      │ │
+│  │ FileBrowser│  │            │  │            │  │            │ │
+│  └─────┬──────┘  └────────────┘  └────────────┘  └────────────┘ │
+│        │                                                         │
+│   Tailscale Serve                                                │
+│   (HTTPS proxy → localhost)                                     │
+└────────┼─────────────────────────────────────────────────────────┘
+         │
+   ┌────▼─────┐
+   │ Internet │
+   │ (public) │
+   └──────────┘
 ```
 
 ### Tailnet Devices
