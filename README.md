@@ -23,21 +23,21 @@ A systematic approach to hardening an Ubuntu 24.04 VPS for production use — co
                                   │   │   │
                     ┌─────────────┘   │   └──────────────┐
                     │                 │                  │
-              ┌─────▼─────┐    ┌─────▼─────┐      ┌──────▼──────┐
-              │ SSH :2222 │    │ Caddy     │      │  Tailscale  │
-              │ (key-only)│    │ :80/:443  │      │  (mesh VPN) │
-              │ +fail2ban │    │ :8443     │      │ WireGuard   │
-              └───────────┘    └─────┬─────┘      └──────┬──────┘
-                                     │                    │
-                              ┌──────▼──────┐      ┌────▼────────┐
-                              │  Portfolio  │      │  Private    │
-                              │  API        │      │  Services   │
-                              │ (localhost) │      │ (localhost) │
-                              └─────────────┘      │ qBittorrent │
-                                                   │ FileBrowser │
-                                                   │ Ollama      │
-                                                   │ OpenClaw GW │
-                                                   └─────────────┘
+              ┌─────▼─────┐     ┌─────▼─────┐     ┌──────▼──────┐
+              │ SSH :2222 │     │ Caddy     │     │  Tailscale  │
+              │ (key-only)│     │ :80/:443  │     │  (mesh VPN) │
+              │ +fail2ban │     │ :8443     │     │ WireGuard   │
+              └───────────┘     └─────┬─────┘     └──────┬──────┘
+                                      │                  │
+                               ┌──────▼──────┐      ┌────▼────────┐
+                               │  Portfolio  │      │  Private    │
+                               │  API        │      │  Services   │
+                               │ (localhost) │      │ (localhost) │
+                               └─────────────┘      │ qBittorrent │
+                                                    │ FileBrowser │
+                                                    │ Ollama      │
+                                                    │ OpenClaw GW │
+                                                    └─────────────┘
 ```
 
 ### Network Segmentation
