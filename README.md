@@ -235,10 +235,10 @@ Traditional network security assumes everything inside the perimeter is trusted.
 │   (HTTPS proxy → localhost)                                      │
 └────────┼─────────────────────────────────────────────────────────┘
          │
-   ┌────▼─────┐
-   │ Internet │
-   │ (public) │
-   └──────────┘
+    ┌────▼─────┐
+    │ Internet │
+    │ (public) │
+    └──────────┘
 ```
 
 ### Tailnet Devices
