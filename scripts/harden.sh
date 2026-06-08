@@ -72,6 +72,7 @@ echo ""
 echo -e "${GREEN}[2/4] Hardening qBittorrent WebUI...${NC}"
 
 QBIT_CONF="/home/openclaw/.config/qBittorrent/qBittorrent.conf"
+# NOTE: /home/openclaw is a legacy filesystem path. The system user retains the original name for compatibility; the AI agent itself is rebranded to Hermes.
 
 if [ -f "$QBIT_CONF" ]; then
     # Stop service FIRST — qBittorrent overwrites config on shutdown

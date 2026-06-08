@@ -1,6 +1,8 @@
 #!/bin/bash
 # Security Hardening Script — April 20, 2026
-# Run with: sudo bash /home/openclaw/.openclaw/workspace/security-hardening.sh
+# Run with: sudo bash /path/to/workspace/security-hardening.sh
+# Note: The system user account retains the original "openclaw" name
+# for compatibility. Update paths as needed for your environment.
 # This handles all 5 audit findings at once.
 
 set -e
@@ -45,6 +47,7 @@ echo ""
 echo "[2/5] Hardening qBittorrent WebUI..."
 
 QBIT_CONF="/home/openclaw/.config/qBittorrent/qBittorrent.conf"
+# NOTE: /home/openclaw is a legacy filesystem path. The system user retains the original name for compatibility.
 
 # Change WebUI Address from 0.0.0.0 to 127.0.0.1
 # This means it's only accessible via localhost or Tailscale proxy
@@ -64,6 +67,8 @@ echo ""
 echo "[3/5] Hardening Portfolio Contact API..."
 
 PORTFOLIO_ENV="/root/portfolio-contact/.env"
+# NOTE: The /home/openclaw path referenced elsewhere is a legacy filesystem path.
+# The system user account retains the original name for compatibility; the AI agent is Hermes.
 
 # Check if .env exists and has a HOST variable
 if [ -f "$PORTFOLIO_ENV" ]; then

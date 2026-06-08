@@ -36,7 +36,7 @@ A systematic approach to hardening an Ubuntu 24.04 VPS for production use — co
                           └──────────────┘    │  qBittorrent   │
                                               │  FileBrowser   │
                                               │  Ollama        │
-                                              │  OpenClaw GW   │
+                                              │  Hermes GW     │
                                               └────────────────┘
 ```
 
@@ -52,7 +52,7 @@ A systematic approach to hardening an Ubuntu 24.04 VPS for production use — co
 | qBittorrent WebUI | 8080 | **127.0.0.1** | Localhost only (Tailscale) |
 | qBittorrent BT | 2984 | Tailscale + eth0 | BitTorrent protocol |
 | Ollama | 11434 | **127.0.0.1** | Localhost only |
-| OpenClaw Gateway | 18789 | **127.0.0.1** | Localhost only (Tailscale Serve) |
+| Hermes Gateway | 9119 | **127.0.0.1** | Localhost only (Tailscale Serve) |
 
 ## 🔧 Hardening Steps
 
@@ -167,7 +167,7 @@ A WireGuard-based mesh VPN provides identity-based access to all private service
 
 Key configuration:
 - All private services bound to `127.0.0.1` — invisible to port scanners
-- Tailscale Serve exposes OpenClaw gateway over HTTPS (automatic TLS, no open ports)
+- Tailscale Serve exposes Hermes gateway over HTTPS (automatic TLS, no open ports)
 - UFW allows `tailscale0` interface — tailnet traffic trusted, public traffic filtered
 - Node key expiry every 180 days for forced re-authentication
 
@@ -226,7 +226,7 @@ Traditional network security assumes everything inside the perimeter is trusted.
 │  │    VPS     │  │  Home PC   │  │ Workstation│  │   iPhone   │  │
 │  │ 100.x.x.x  │  │ 100.x.x.x  │  │ 100.x.x.x  │  │ 100.x.x.x  │  │
 │  │            │  │            │  │            │  │            │  │
-│  │ OpenClawGW │  │  Admin     │  │ Secondary  │  │ Mobile     │  │
+│  │ Hermes GW  │  │  Admin     │  │ Secondary  │  │ Mobile     │  │
 │  │ qBittorrent│  │  access    │  │ workstation│  │ admin      │  │
 │  │ FileBrowser│  │            │  │            │  │            │  │
 │  └─────┬──────┘  └────────────┘  └────────────┘  └────────────┘  │
@@ -252,15 +252,15 @@ Traditional network security assumes everything inside the perimeter is trusted.
 
 ### Tailscale Serve — Secure Public Access
 
-Tailscale Serve exposes the OpenClaw gateway over HTTPS without opening any firewall ports:
+Tailscale Serve exposes the Hermes gateway over HTTPS without opening any firewall ports:
 
 ```
 https://<hostname>.<tailnet>.ts.net (tailnet only)
-└── / → proxy http://127.0.0.1:18789
+└── / → proxy http://127.0.0.1:9119
 ```
 
 This means:
-- The OpenClaw web UI is accessible at `https://<hostname>.<tailnet>.ts.net` from any tailnet device
+- The Hermes dashboard is accessible at `https://<hostname>.<tailnet>.ts.net` from any tailnet device
 - **No ports are opened** — the connection is brokered by Tailscale's coordination server
 - **Automatic HTTPS** — Tailscale provisions and renews TLS certificates
 - **Tailnet-only** — Not exposed to the public internet (no funnel)
@@ -272,7 +272,7 @@ This means:
 | SSH (2222) | ✅ key-only¹ | ✅ | ✅ |
 | Caddy (80/443) | ✅ | ✅ | ✅ |
 | Portfolio API | via Caddy⁺ | ✅ | ✅ |
-| OpenClaw UI | ❌ | ✅ Tailscale Serve | ✅ |
+| Hermes UI | ❌ | ✅ Tailscale Serve | ✅ |
 | qBittorrent UI | ❌ | ✅\* | ✅ |
 | FileBrowser | ❌ | ✅\* | ✅ |
 | Ollama | ❌ | ✅\* | ✅ |
@@ -283,7 +283,7 @@ This means:
 
 ### Security Properties
 
-1. **No open ports for private services** — qBittorrent, FileBrowser, Ollama, and the OpenClaw gateway are all bound to `127.0.0.1`. They're invisible to port scanners.
+1. **No open ports for private services** — qBittorrent, FileBrowser, Ollama, and the Hermes gateway are all bound to `127.0.0.1`. They're invisible to port scanners.
 
 2. **Identity-based access** — Only authenticated devices in the `<tailnet>.ts.net` tailnet can reach private services. Access is tied to the Google account (`<admin-email>`), not a shared VPN password.
 
